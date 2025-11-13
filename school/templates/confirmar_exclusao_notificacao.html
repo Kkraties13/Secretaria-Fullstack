@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Exclusão de Notificação - Sistema Escolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dc3545;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #dc3545;
+            margin: 0;
+        }
+        .warning-icon {
+            font-size: 4em;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        .notificacao-info {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .notificacao-titulo {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .notificacao-detalhes {
+            color: #666;
+            line-height: 1.6;
+        }
+        .notificacao-detalhes strong {
+            color: #333;
+        }
+        .confirmation-text {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .btn {
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            color: #17a2b8;
+            text-decoration: none;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="{% url 'listar_notificacoes' %}">← Voltar para Notificações</a>
+        </div>
+
+        <div class="header">
+            <div class="warning-icon">⚠️</div>
+            <h1>Confirmar Exclusão de Notificação</h1>
+        </div>
+
+        <div class="notificacao-info">
+            <div class="notificacao-titulo">{{ notificacao.titulo }}</div>
+            <div class="notificacao-detalhes">
+                <strong>Tipo:</strong> {{ notificacao.get_tipo_display }}<br>
+                <strong>Criada em:</strong> {{ notificacao.data_criacao|date:"d/m/Y H:i" }}<br>
+                <strong>Status:</strong> {% if notificacao.enviada %}Enviada{% else %}Pendente{% endif %}<br>
+                {% if notificacao.data_envio %}
+                    <strong>Enviada em:</strong> {{ notificacao.data_envio|date:"d/m/Y H:i" }}<br>
+                {% endif %}
+                <strong>Mensagem:</strong><br>
+                {{ notificacao.mensagem }}
+            </div>
+        </div>
+
+        <div class="confirmation-text">
+            <p><strong>Tem certeza que deseja excluir esta notificação?</strong></p>
+            <p>Esta ação não pode ser desfeita.</p>
+        </div>
+
+        <div class="form-actions">
+            <form method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">🗑️ Sim, Excluir</button>
+            </form>
+            <a href="{% url 'listar_notificacoes' %}" class="btn btn-secondary">❌ Cancelar</a>
+        </div>
+    </div>
+</body>
+</html>
+

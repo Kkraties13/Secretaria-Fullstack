@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertência</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            line-height: 1.4;
+            font-size: 1.2em; /* Aumentei a fonte para facilitar a leitura */
+        }
+        .assinatura {
+            margin-top: 50px; /* Mais espaço */
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        .assinatura div {
+            margin-top: 60px;
+            border-top: 1px solid #000;
+            width: 350px; /* Linha maior */
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Advertência Escolar</h1>
+    
+    <p style="text-align: right;">Data: {{ advertencia.data|date:"d/m/Y" }}</p>
+    
+    <p>
+        Informo ao responsável, Sr(a). <strong>{{ responsavel.complet_name }}</strong>,
+        que o(a) aluno(a) <strong>{{ aluno.complet_name_aluno }}</strong>,
+        da turma <strong>{{ aluno.class_choices }}</strong>,
+        está sendo formalmente advertido(a) pelo seguinte motivo:
+    </p>
+    
+    <p style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
+        {{ advertencia.motivo }}
+    </p>
+    
+    <p>
+        Assim, infringindo as regras da instituição. Solicitamos que o responsável tome ciência
+        e converse com o aluno sobre o ocorrido.
+    </p>
+
+    <div class="assinatura">
+        <div></div>
+        <p>Assinatura da Escola</p>
+    </div>
+    
+    <div class="assinatura">
+        <div></div>
+        <p>Assinatura do Responsável</p>
+    </div>
+</body>
+</html>

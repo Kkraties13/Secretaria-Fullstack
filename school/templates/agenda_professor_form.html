@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if atividade %}Editar{% else %}Adicionar{% endif %} Atividade - Agenda do Professor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #28a745;
+            margin: 0;
+        }
+        .professor-info {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .professor-info h3 {
+            margin: 0 0 10px 0;
+            color: #28a745;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .form-actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .required {
+            color: #dc3545;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            color: #28a745;
+            text-decoration: none;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="{% url 'agenda_professor' professor.id %}">← Voltar para Agenda do Professor</a>
+        </div>
+
+        <div class="header">
+            <h1>{% if atividade %}✏️ Editar Atividade{% else %}➕ Adicionar Atividade{% endif %}</h1>
+        </div>
+
+        <div class="professor-info">
+            <h3>👨‍🏫 {{ professor.complet_name_prof }}</h3>
+            <p><strong>Matéria:</strong> {{ professor.materia_prof }}</p>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="titulo">Título da Atividade <span class="required">*</span></label>
+                <input type="text" id="titulo" name="titulo" value="{% if atividade %}{{ atividade.titulo }}{% endif %}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes da atividade...">{% if atividade %}{{ atividade.descricao }}{% endif %}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="data">Data da Atividade <span class="required">*</span></label>
+                <input type="date" id="data" name="data" value="{% if atividade %}{{ atividade.data|date:'Y-m-d' }}{% endif %}" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="hora_inicio">Hora de Início <span class="required">*</span></label>
+                    <input type="time" id="hora_inicio" name="hora_inicio" value="{% if atividade %}{{ atividade.hora_inicio|time:'H:i' }}{% endif %}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="hora_fim">Hora de Término</label>
+                    <input type="time" id="hora_fim" name="hora_fim" value="{% if atividade and atividade.hora_fim %}{{ atividade.hora_fim|time:'H:i' }}{% endif %}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo_atividade">Tipo de Atividade <span class="required">*</span></label>
+                <select id="tipo_atividade" name="tipo_atividade" required>
+                    <option value="">Selecione o tipo...</option>
+                    {% for valor, nome in tipos_atividade %}
+                        <option value="{{ valor }}" {% if atividade and atividade.tipo_atividade == valor %}selected{% endif %}>
+                            {{ nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">
+                    {% if atividade %}💾 Salvar Alterações{% else %}➕ Adicionar Atividade{% endif %}
+                </button>
+                <a href="{% url 'agenda_professor' professor.id %}" class="btn btn-secondary">❌ Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Validação para garantir que a hora de fim não seja anterior à hora de início
+        document.getElementById('hora_fim').addEventListener('change', function() {
+            const horaInicio = document.getElementById('hora_inicio').value;
+            const horaFim = this.value;
+            
+            if (horaInicio && horaFim && horaFim <= horaInicio) {
+                alert('A hora de término deve ser posterior à hora de início.');
+                this.value = '';
+            }
+        });
+
+        document.getElementById('hora_inicio').addEventListener('change', function() {
+            const horaInicio = this.value;
+            const horaFim = document.getElementById('hora_fim').value;
+            
+            if (horaInicio && horaFim && horaFim <= horaInicio) {
+                alert('A hora de término foi limpa pois era anterior ou igual à nova hora de início.');
+                document.getElementById('hora_fim').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
+

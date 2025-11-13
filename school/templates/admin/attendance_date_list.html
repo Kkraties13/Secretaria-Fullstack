@@ -1,0 +1,59 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label='school' %}">School</a>
+    &rsaquo; <a href="{% url 'admin:school_falta_changelist' %}">Faltas</a>
+    &rsaquo; Chamadas por Data
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Chamadas por Data</h1>
+    
+    <div class="module">
+        <p>Selecione uma data para visualizar as chamadas realizadas:</p>
+        
+        <div class="results">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Turmas</th>
+                        <th>Total de Alunos</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for date_info in dates %}
+                    <tr>
+                        <td>{{ date_info.date|date:"d/m/Y" }}</td>
+                        <td>{{ date_info.turmas_count }} turma(s)</td>
+                        <td>{{ date_info.total_records }} aluno(s)</td>
+                        <td>
+                            <a href="{{ date_info.url }}" class="button">Ver Detalhes</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center;">Nenhuma chamada realizada ainda.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="module">
+        <h2>Links Rápidos</h2>
+        <ul>
+            <li><a href="{% url 'admin:attendance_by_date' %}">Ver Todas as Chamadas</a></li>
+            <li><a href="{% url 'admin:school_turmas_changelist' %}">Gerenciar Turmas</a></li>
+            <li><a href="{% url 'admin:school_aluno_changelist' %}">Gerenciar Alunos</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

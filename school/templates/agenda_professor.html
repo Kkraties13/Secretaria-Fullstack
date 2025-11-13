@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - {{ professor.complet_name_prof }} - Sistema Escolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #28a745;
+            margin: 0;
+        }
+        .professor-info {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .professor-info h2 {
+            margin: 0 0 10px 0;
+            color: #28a745;
+        }
+        .professor-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .data-section {
+            margin-bottom: 30px;
+        }
+        .data-titulo {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .atividade {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+        .atividade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .atividade-titulo {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .atividade-tipo {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .tipo-aula { background-color: #007bff; color: white; }
+        .tipo-reuniao { background-color: #dc3545; color: white; }
+        .tipo-correcao_provas { background-color: #ffc107; color: #212529; }
+        .tipo-outros { background-color: #6c757d; color: white; }
+        .atividade-horario {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .atividade-descricao {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .atividade-acoes {
+            display: flex;
+            gap: 10px;
+        }
+        .atividade-acoes a {
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .no-atividades {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            color: #28a745;
+            text-decoration: none;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="{% url 'lista_professores_agenda' %}">← Voltar para Lista de Professores</a>
+        </div>
+
+        <div class="header">
+            <h1>📋 Agenda do Professor</h1>
+            <a href="{% url 'adicionar_atividade_agenda' professor.id %}" class="btn">➕ Adicionar Atividade</a>
+        </div>
+
+        <div class="professor-info">
+            <h2>👨‍🏫 {{ professor.complet_name_prof }}</h2>
+            <p><strong>Matéria:</strong> {{ professor.materia_prof }}</p>
+            <p><strong>Email:</strong> {{ professor.email_prof }}</p>
+            <p><strong>Telefone:</strong> {{ professor.phone_number_prof }}</p>
+            {% if professor.class_choices %}
+                <p><strong>Turma:</strong> {{ professor.class_choices }}</p>
+            {% endif %}
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if atividades %}
+            {% for data_str, atividades_data in atividades_por_data.items %}
+                <div class="data-section">
+                    <div class="data-titulo">
+                        <h2>{{ atividades_data.0.data|date:"l, d \d\e F \d\e Y" }}</h2>
+                    </div>
+                    
+                    {% for atividade in atividades_data %}
+                        <div class="atividade">
+                            <div class="atividade-header">
+                                <div class="atividade-titulo">{{ atividade.titulo }}</div>
+                                <div class="atividade-tipo tipo-{{ atividade.tipo_atividade }}">
+                                    {{ atividade.get_tipo_atividade_display }}
+                                </div>
+                            </div>
+                            
+                            <div class="atividade-horario">
+                                🕐 {{ atividade.hora_inicio|time:"H:i" }}
+                                {% if atividade.hora_fim %}
+                                    às {{ atividade.hora_fim|time:"H:i" }}
+                                {% endif %}
+                            </div>
+                            
+                            {% if atividade.descricao %}
+                                <div class="atividade-descricao">
+                                    {{ atividade.descricao }}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="atividade-acoes">
+                                <a href="{% url 'editar_atividade_agenda' atividade.id %}" class="btn btn-warning">✏️ Editar</a>
+                                <a href="{% url 'excluir_atividade_agenda' atividade.id %}" class="btn btn-danger">🗑️ Excluir</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-atividades">
+                <h3>Nenhuma atividade cadastrada</h3>
+                <p>Clique em "Adicionar Atividade" para começar a organizar a agenda do professor.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

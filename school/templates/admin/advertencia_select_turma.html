@@ -1,0 +1,14 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+  <h1>Selecionar Turma para Visualizar Advertências</h1>
+  <form method="post" action="">
+    {% csrf_token %}
+    <label for="turma">Turma:</label>
+    <select name="turma" id="turma" required>
+      {% for turma in turmas %}
+        <option value="{{ turma.id }}">{{ turma.class_name }} - {{ turma.itinerary_name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Visualizar Advertências</button>
+  </form>
+{% endblock %}

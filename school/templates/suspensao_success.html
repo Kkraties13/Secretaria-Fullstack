@@ -1,0 +1,6 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>Suspensão criada</h1>
+<p>Suspensão criada para {{ suspensao.aluno }} na turma {{ suspensao.turma }} a partir de {{ suspensao.data_inicio }}.</p>
+<a href="{% url 'school:suspensao_select_turma' %}">Voltar</a>
+{% endblock %}

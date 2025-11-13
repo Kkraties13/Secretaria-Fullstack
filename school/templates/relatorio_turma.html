@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relatório da Turma {{ turma.class_name }}</title>
+</head>
+<body>
+    <!-- Título principal da página -->
+    <h1>Relatório da Turma {{ turma.class_name }}</h1>
+    {% if relatorio %}
+        <!-- Exibe alerta apenas uma vez se houver algum aluno com média abaixo de 70 -->
+        {% with alerta_exibido=False %}
+            {% for item in relatorio %}
+                {% if item.atencao and not alerta_exibido %}
+                    <div style="color: red; font-weight: bold; margin-bottom: 10px;">
+                        ⚠️ Atenção: Existem alunos com desempenho abaixo de 70 nesta turma!
+                    </div>
+                    {% with alerta_exibido=True %}{% endwith %}
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+    {% endif %}
+    {% if grafico %}
+        <!-- Exibe o gráfico de desempenho da turma, se existir -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="data:image/png;base64,{{ grafico }}" alt="Gráfico de Desempenho da Turma">
+        </div>
+    {% endif %}
+    <!-- Tabela com o nome dos alunos e suas médias -->
+    <table border="1">
+        <tr>
+            <th>Aluno</th>
+            <th>Média</th>
+        </tr>
+        {% for item in relatorio %}
+        <tr>
+            <td>{{ item.aluno.complet_name_aluno }}</td>
+            <td {% if item.atencao %} style="color: red; font-weight: bold;" {% endif %}>
+                {{ item.media|default:"-" }}
+                {% if item.atencao %}<span title="Nota menor que 70">⚠️</span>{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

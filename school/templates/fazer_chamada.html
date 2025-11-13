@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <label for="mes_ano">Selecione o mês e ano:</label>
+    <input type="month" id="mes_ano" name="mes_ano" value="{{ mes_atual }}" required>
+    <button type="submit">Gerar Chamada</button>
+</form>
+
+{% if mes_atual %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Aluno</th>
+                {% for dia in dias %}
+                    <th>{{ dia }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.complet_name_aluno }}</td>
+                    {% for dia in dias %}
+                        {% with data=mes_atual|date:"Y-m-"|add:dia|stringformat:"02d" %}
+                            {% with status=falta_statuses|dict_lookup:aluno.id|dict_lookup:dia %}
+                                <td>
+                                    <select name="status_{{ aluno.id }}_{{ dia }}">
+                                        <option value="P" {% if status == 'P' %}selected{% endif %}>P</option>
+                                        <option value="F" {% if status == 'F' %}selected{% endif %}>F</option>
+                                    </select>
+                                </td>
+                            {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit">Salvar Chamada</button>
+{% endif %}
+</form>
+{% endblock %}

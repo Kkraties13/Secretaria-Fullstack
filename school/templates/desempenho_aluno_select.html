@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selecionar Aluno</title>
+</head>
+<body>
+    <!-- Título principal da página de seleção de aluno -->
+    <h1>Selecione um Aluno</h1>
+    <!-- Lista de alunos disponíveis para seleção -->
+    <ul>
+        {% for aluno in alunos %}
+        <li>
+            <!-- Link para o gráfico de desempenho do aluno selecionado -->
+            <a href="{% url 'grafico_desempenho_aluno' aluno.id %}">
+                {{ aluno.complet_name_aluno }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- Link para voltar à página inicial de desempenho -->
+    <a href="{% url 'desempenho_index' %}">Voltar</a>
+</body>
+</html>

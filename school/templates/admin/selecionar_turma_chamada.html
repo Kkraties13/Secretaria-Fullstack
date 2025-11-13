@@ -1,0 +1,26 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <form method="get">
+    <label for="turma">Selecione a turma:</label>
+    <select name="turma_id" id="turma" required>
+      <option value="">-- Escolha uma turma --</option>
+      {% for turma in turmas %}
+        <option value="{{ turma.id }}">{{ turma.class_name }} - {{ turma.itinerary_name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Fazer Chamada</button>
+  </form>
+  <a href="../">&larr; Voltar</a>
+  <script>
+    document.querySelector('form').onsubmit = function(e) {
+      e.preventDefault();
+      var turmaId = document.getElementById('turma').value;
+      if (turmaId) {
+        window.location.href = turmaId + '/';
+      }
+    };
+  </script>
+{% endblock %}

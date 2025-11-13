@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendas dos Professores - Sistema Escolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #28a745;
+            margin: 0;
+        }
+        .professores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .professor-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .professor-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .professor-nome {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .professor-info {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .professor-info p {
+            margin: 5px 0;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .no-professores {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            color: #28a745;
+            text-decoration: none;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="{% url 'calendario_academico' %}">← Voltar para Calendário Acadêmico</a>
+        </div>
+
+        <div class="header">
+            <h1>👨‍🏫 Agendas dos Professores</h1>
+            <p>Selecione um professor para visualizar e gerenciar sua agenda.</p>
+        </div>
+
+        {% if professores %}
+            <div class="professores-grid">
+                {% for professor in professores %}
+                    <div class="professor-card">
+                        <div class="professor-nome">
+                            {{ professor.complet_name_prof }}
+                        </div>
+                        <div class="professor-info">
+                            <p><strong>📚 Matéria:</strong> {{ professor.materia_prof }}</p>
+                            <p><strong>📧 Email:</strong> {{ professor.email_prof }}</p>
+                            <p><strong>📞 Telefone:</strong> {{ professor.phone_number_prof }}</p>
+                            {% if professor.class_choices %}
+                                <p><strong>🎓 Turma:</strong> {{ professor.class_choices }}</p>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'agenda_professor' professor.id %}" class="btn">
+                            📋 Ver Agenda
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-professores">
+                <h3>Nenhum professor cadastrado</h3>
+                <p>Cadastre professores no sistema para poder gerenciar suas agendas.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

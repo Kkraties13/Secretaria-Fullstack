@@ -1,0 +1,12 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>Selecionar Turma para Suspensão</h1>
+<p><a href="{% url 'school:suspensao_list' %}">Ver Suspensões Ativas</a></p>
+<ul>
+    {% for turma in turmas %}
+    <li>{{ turma.class_name }} {{ turma.itinerary_name }} - <a href="{% url 'school:suspensao_select_aluno' turma.id %}">Selecionar Aluno</a></li>
+    {% empty %}
+    <li>Nenhuma turma cadastrada.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

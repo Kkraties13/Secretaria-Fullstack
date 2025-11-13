@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if evento %}Editar{% else %}Adicionar{% endif %} Evento - Calendário Acadêmico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .form-actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .required {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{% if evento %}✏️ Editar Evento{% else %}➕ Adicionar Evento{% endif %}</h1>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="titulo">Título do Evento <span class="required">*</span></label>
+                <input type="text" id="titulo" name="titulo" value="{% if evento %}{{ evento.titulo }}{% endif %}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" placeholder="Descreva os detalhes do evento...">{% if evento %}{{ evento.descricao }}{% endif %}</textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="data_inicio">Data de Início <span class="required">*</span></label>
+                    <input type="date" id="data_inicio" name="data_inicio" value="{% if evento %}{{ evento.data_inicio|date:'Y-m-d' }}{% endif %}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="data_fim">Data de Término</label>
+                    <input type="date" id="data_fim" name="data_fim" value="{% if evento and evento.data_fim %}{{ evento.data_fim|date:'Y-m-d' }}{% endif %}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tipo_evento">Tipo de Evento <span class="required">*</span></label>
+                    <select id="tipo_evento" name="tipo_evento" required>
+                        <option value="">Selecione o tipo...</option>
+                        {% for valor, nome in tipos_evento %}
+                            <option value="{{ valor }}" {% if evento and evento.tipo_evento == valor %}selected{% endif %}>
+                                {{ nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="turma">Turma (opcional)</label>
+                    <select id="turma" name="turma">
+                        <option value="">Todas as turmas</option>
+                        {% for turma in turmas %}
+                            <option value="{{ turma.id }}" {% if evento and evento.turma_id == turma.id %}selected{% endif %}>
+                                {{ turma }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">
+                    {% if evento %}💾 Salvar Alterações{% else %}➕ Adicionar Evento{% endif %}
+                </button>
+                <a href="{% url 'calendario_academico' %}" class="btn btn-secondary">❌ Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Validação para garantir que a data de fim não seja anterior à data de início
+        document.getElementById('data_fim').addEventListener('change', function() {
+            const dataInicio = document.getElementById('data_inicio').value;
+            const dataFim = this.value;
+            
+            if (dataInicio && dataFim && dataFim < dataInicio) {
+                alert('A data de término não pode ser anterior à data de início.');
+                this.value = '';
+            }
+        });
+
+        document.getElementById('data_inicio').addEventListener('change', function() {
+            const dataInicio = this.value;
+            const dataFim = document.getElementById('data_fim').value;
+            
+            if (dataInicio && dataFim && dataFim < dataInicio) {
+                alert('A data de término foi ajustada pois era anterior à nova data de início.');
+                document.getElementById('data_fim').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,8 @@
+<h2>Selecione a turma para a data: {{ data }}</h2>
+<ul>
+  {% for turma in turmas %}
+    <li>
+      <a href="{% url 'faltas_chamada_por_data_turma' data=data turma_id=turma.id %}">{{ turma.class_name }}</a>
+    </li>
+  {% endfor %}
+</ul>

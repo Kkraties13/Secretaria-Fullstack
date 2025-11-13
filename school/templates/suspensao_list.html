@@ -1,0 +1,47 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>Lista de Suspensões</h1>
+
+<form method="get">
+    <label>Filtrar por turma: </label>
+    <select name="turma" onchange="this.form.submit()">
+        <option value="">(Todas)</option>
+        {% for t in turmas %}
+        <option value="{{ t.id }}" {% if selected_turma == t.id %}selected{% endif %}>{{ t.class_name }} {{ t.itinerary_name }}</option>
+        {% endfor %}
+    </select>
+    &nbsp; <label><input type="checkbox" name="all" value="1" {% if mostrar_todas %}checked{% endif %} onchange="this.form.submit()"> Mostrar todas</label>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Aluno</th>
+            <th>Turma</th>
+            <th>Início</th>
+            <th>Fim</th>
+            <th>Motivo</th>
+            <th>Criado por</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in suspensoes %}
+        <tr>
+            <td>{{ s.aluno.complet_name_aluno }}</td>
+            <td>{{ s.turma }}</td>
+            <td>{{ s.data_inicio }}</td>
+            <td>{% if s.data_fim %}{{ s.data_fim }}{% else %}-{% endif %}</td>
+            <td>{{ s.motivo|truncatechars:60 }}</td>
+            <td>{{ s.criado_por }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Nenhuma suspensão encontrada.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'school:suspensao_select_turma' %}">Voltar</a></p>
+
+{% endblock %}

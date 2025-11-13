@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Desempenho</title>
+</head>
+<body>
+    <!-- Título principal da página de desempenho -->
+    <h1>Desempenho</h1>
+    <!-- Lista de opções para acessar os relatórios de desempenho -->
+    <ul>
+        <li>
+            <!-- Link para desempenho por aluno -->
+            <a href="{% url 'desempenho_aluno_select' %}">Desempenho por Aluno</a>
+        </li>
+        <li>
+            <!-- Link para desempenho por turma -->
+            <a href="{% url 'desempenho_turma_select' %}">Desempenho por Turma</a>
+        </li>
+        <li>
+            <!-- Link para desempenho por disciplina -->
+            <a href="{% url 'desempenho_disciplina_select' %}">Desempenho por Disciplina</a>
+        </li>
+    </ul>
+</body>
+</html>

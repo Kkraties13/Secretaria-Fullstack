@@ -1,0 +1,83 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label='school' %}">School</a>
+    &rsaquo; <a href="{% url 'admin:attendance_by_date' %}">Chamadas Realizadas</a>
+    &rsaquo; <a href="{% url 'admin:attendance_date_detail' date %}">{{ date|date:"d/m/Y" }}</a>
+    &rsaquo; {{ turma }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Chamada - {{ turma }} - {{ formatted_date }}</h1>
+    
+    <div class="module">
+        <div class="summary">
+            <h3>Resumen de la llamada</h3>
+            <table>
+                <tr>
+                    <th>Total de Alumnos:</th>
+                    <td>{{ summary.total_alunos }}</td>
+                </tr>
+                <tr>
+                    <th>Presentes:</th>
+                    <td>{{ summary.presentes }}</td>
+                </tr>
+                <tr>
+                    <th>Faltas:</th>
+                    <td>{{ summary.faltas }}</td>
+                </tr>
+                <tr>
+                    <th>Tasa de Presencia:</th>
+                    <td>
+                        {% if summary.total_alunos > 0 %}
+                            {{ summary.presentes|floatformat:1 }}% ({{ summary.presentes }}/{{ summary.total_alunos }})
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Alumno</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance_records %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ record.aluno.complet_name_aluno }}</td>
+                    <td>
+                        {% if record.status == 'P' %}
+                            <span style="color: green; font-weight: bold;">✓ Presente</span>
+                        {% else %}
+                            <span style="color: red; font-weight: bold;">✗ Falta</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align: center;">Nenhum registro de chamada encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="submit-row">
+        <a href="{% url 'admin:attendance_date_detail' date %}" class="button">← Voltar para Turmas</a>
+        <a href="{% url 'admin:attendance_by_date' %}" class="button">← Voltar para Chamadas</a>
+    </div>
+</div>
+</div>
+{% endblock %}

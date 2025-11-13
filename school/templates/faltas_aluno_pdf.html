@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Faltas - {{ aluno.complet_name_aluno }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #dc3545;
+        }
+        h2 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+        .resumo {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .alerta {
+            color: white;
+            background-color: #dc3545;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Relatório de Faltas - {{ aluno.complet_name_aluno }}</h1>
+
+    <div class="resumo">
+        <p><strong>Matrícula:</strong> {{ aluno.matricula_aluno }}</p>
+        <p><strong>Turma:</strong> {{ aluno.class_choices }}</p>
+        <p><strong>Total de Aulas Registradas:</strong> {{ total_aulas }}</p>
+        <p><strong>Total de Faltas:</strong> {{ total_faltas }}</p>
+        <p><strong>Percentual de Faltas:</strong> {{ percentual }}%</p>
+    </div>
+
+    {% if passou_limite %}
+        <div class="alerta">
+            ⚠️ O aluno excedeu o limite de faltas (considerando 25% do total de aulas).
+        </div>
+    {% endif %}
+
+    <h2>Detalhes das Faltas</h2>
+
+    {% if faltas %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Matéria</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for falta in faltas %}
+                <tr>
+                    <td>{{ falta.data|date:"d/m/Y" }}</td>
+                    <td>-</td> 
+                    <td>{{ falta.observacao|default:"Nenhuma." }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhuma falta registrada para este aluno.</p>
+    {% endif %}
+</body>
+</html>

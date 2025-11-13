@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selecionar Turma</title>
+</head>
+<body>
+    <!-- Título principal da página de seleção de turma -->
+    <h1>Selecione uma Turma</h1>
+    <!-- Lista de turmas disponíveis para seleção -->
+    <ul>
+        {% for turma in turmas %}
+        <li>
+            <!-- Link para o relatório da turma selecionada -->
+            <a href="{% url 'relatorio_turma' turma.id %}">
+                {{ turma.class_name }} - {{ turma.itinerary_name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- Link para voltar à página inicial de desempenho -->
+    <a href="{% url 'desempenho_index' %}">Voltar</a>
+</body>
+</html>

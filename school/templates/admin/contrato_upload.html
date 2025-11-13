@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+  <!-- Título da página de upload do contrato assinado -->
+  <h1>Enviar Contrato Assinado</h1>
+  <!-- Exibe o nome do aluno relacionado ao contrato -->
+  <p><strong>Aluno:</strong> {{ original.aluno }}</p>
+  <!-- Exibe o link para gerar/baixar o contrato PDF -->
+  <p><strong>Contrato PDF:</strong> {{ original.contrato_pdf_link|safe }}</p>
+  <!-- Formulário para upload do arquivo PDF assinado e marcação do contrato como assinado -->
+  <form method="post" enctype="multipart/form-data" style="margin-top:20px;">
+    {% csrf_token %}
+    <div style="margin-bottom: 10px;">
+      <!-- Campo para selecionar o arquivo PDF do contrato assinado -->
+      <label for="id_arquivo_assinado"><strong>Arquivo do Contrato Assinado (PDF):</strong></label><br>
+      <input type="file" name="arquivo_assinado" id="id_arquivo_assinado" accept="application/pdf" required>
+    </div>
+    <div style="margin-bottom: 10px;">
+      <!-- Checkbox para marcar o contrato como assinado -->
+      <label for="id_contrato_assinado">
+        <input type="checkbox" name="contrato_assinado" id="id_contrato_assinado" {% if original.contrato_assinado %}checked{% endif %}>
+        Marcar como contrato assinado
+      </label>
+    </div>
+    <!-- Botão para enviar o formulário -->
+    <button type="submit" class="default">Enviar</button>
+    <!-- Link para voltar à tela anterior do admin -->
+    <a href="../" class="button">Voltar</a>
+  </form>
+  <!-- Exibe o link para visualizar o contrato assinado, se já houver upload -->
+  {% if original.contrato_assinado_link %}
+    <p style="margin-top:20px;">{{ original.contrato_assinado_link|safe }}</p>
+  {% endif %}
+{% endblock %}

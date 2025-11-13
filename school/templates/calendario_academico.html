@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Acadêmico - Sistema Escolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .mes-section {
+            margin-bottom: 30px;
+        }
+        .mes-titulo {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .evento {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+        .evento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .evento-titulo {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+        .evento-tipo {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .tipo-prova { background-color: #dc3545; color: white; }
+        .tipo-feriado { background-color: #28a745; color: white; }
+        .tipo-evento { background-color: #007bff; color: white; }
+        .tipo-entrega_trabalho { background-color: #ffc107; color: #212529; }
+        .tipo-outros { background-color: #6c757d; color: white; }
+        .evento-data {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .evento-descricao {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .evento-turma {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .evento-acoes {
+            display: flex;
+            gap: 10px;
+        }
+        .evento-acoes a {
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+        .messages {
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .no-eventos {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 Calendário Acadêmico</h1>
+            <a href="{% url 'adicionar_evento_calendario' %}" class="btn">➕ Adicionar Evento</a>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if eventos %}
+            {% for mes_ano, eventos_mes in eventos_por_mes.items %}
+                <div class="mes-section">
+                    <div class="mes-titulo">
+                        <h2>{{ eventos_mes.0.data_inicio|date:"F Y" }}</h2>
+                    </div>
+                    
+                    {% for evento in eventos_mes %}
+                        <div class="evento">
+                            <div class="evento-header">
+                                <div class="evento-titulo">{{ evento.titulo }}</div>
+                                <div class="evento-tipo tipo-{{ evento.tipo_evento }}">
+                                    {{ evento.get_tipo_evento_display }}
+                                </div>
+                            </div>
+                            
+                            <div class="evento-data">
+                                📅 {{ evento.data_inicio|date:"d/m/Y" }}
+                                {% if evento.data_fim and evento.data_fim != evento.data_inicio %}
+                                    até {{ evento.data_fim|date:"d/m/Y" }}
+                                {% endif %}
+                            </div>
+                            
+                            {% if evento.descricao %}
+                                <div class="evento-descricao">
+                                    {{ evento.descricao }}
+                                </div>
+                            {% endif %}
+                            
+                            {% if evento.turma %}
+                                <div class="evento-turma">
+                                    🎓 Turma: {{ evento.turma }}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="evento-acoes">
+                                <a href="{% url 'editar_evento_calendario' evento.id %}" class="btn btn-warning">✏️ Editar</a>
+                                <a href="{% url 'excluir_evento_calendario' evento.id %}" class="btn btn-danger">🗑️ Excluir</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-eventos">
+                <h3>Nenhum evento cadastrado</h3>
+                <p>Clique em "Adicionar Evento" para começar a organizar o calendário acadêmico.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+    {% if user.is_authenticated %}
+        {% if user.aluno.exists %} <div class="evento-acoes" style="margin-top: 10px;">
+            <a href="{% url 'inscrever_aluno_evento' evento.id %}" class="btn">
+                Inscrever-se
+            </a>
+        </div>
+        {% endif %}
+    {% endif %}
+

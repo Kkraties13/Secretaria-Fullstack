@@ -1,0 +1,8 @@
+{% extends "admin/base.html" %}
+
+{% block branding %}
+  <h1 id="site-name">
+    {{ site_header|default:_('Django administration') }}
+    <a href="/faltas/" style="margin-left:30px; font-size:16px; color:#007bff; text-decoration:underline;">Visualizar Chamadas</a>
+  </h1>
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selecionar Disciplina</title>
+</head>
+<body>
+    <!-- Título principal da página de seleção de disciplina -->
+    <h1>Selecione uma Disciplina</h1>
+    <!-- Lista de disciplinas disponíveis para seleção -->
+    <ul>
+        {% for materia in materias %}
+        <li>
+            <!-- Link para o gráfico de desempenho da disciplina selecionada -->
+            <a href="{% url 'grafico_disciplina' materia.id %}">
+                {{ materia.name_subject }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- Link para voltar à página inicial de desempenho -->
+    <a href="{% url 'desempenho_index' %}">Voltar</a>
+</body>
+</html>

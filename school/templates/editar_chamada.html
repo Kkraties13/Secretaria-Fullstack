@@ -1,0 +1,25 @@
+<h2>Editar chamada para {{ turma.class_name }} em {{ data }}</h2>
+<form method="post">
+  {% csrf_token %}
+  <table border="1">
+    <tr>
+      <th>Aluno</th>
+      <th>Status</th>
+    </tr>
+    {% for falta in faltas %}
+      <tr>
+        <td>{{ falta.aluno.complet_name_aluno }}</td>
+        <td>
+          <select name="status_{{ falta.id }}">
+            <option value="P" {% if falta.status == 'P' %}selected{% endif %}>Presente</option>
+            <option value="F" {% if falta.status == 'F' %}selected{% endif %}>Faltou</option>
+          </select>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="2">Nenhuma chamada registrada para esta turma nesta data.</td></tr>
+    {% endfor %}
+  </table>
+  <button type="submit">Salvar alterações</button>
+</form>
+<a href="{% url 'faltas_chamada_por_data_turma' data=data turma_id=turma.id %}">Voltar</a>

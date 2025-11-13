@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls static %}
+
+{% block content %}
+  {{ custom_help|safe }}
+  <style>
+    .bimestre-form-inline { margin-bottom: 20px; }
+  </style>
+  <div class="bimestre-form-inline">
+    {{ bimestre_form.as_p }}
+  </div>
+  {{ block.super }}
+{% endblock %}

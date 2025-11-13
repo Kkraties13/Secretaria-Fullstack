@@ -1,0 +1,2 @@
+- [x] Atualizar views_advertencia.py para adicionar 'itinerario' ao contexto, definindo 'A' se não houver itinerário.
+- [x] Atualizar advertencia.html para incluir o itinerário no texto da advertência.

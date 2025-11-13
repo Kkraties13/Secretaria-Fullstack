@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>{{ title }}</h1>
+<form method="post">{% csrf_token %}
+    <label for="id_data">Data da chamada:</label>
+    <input type="date" name="data" id="id_data" required><br><br>
+    <table class="adminlist">
+        <tr><th>Aluno</th><th>Status (P/F)</th></tr>
+        {% for aluno in alunos %}
+        <tr>
+            <td>{{ aluno.complet_name_aluno }}</td>
+            <td><input type="text" name="status_{{ aluno.id }}" maxlength="1" style="width:30px;" required></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <input type="submit" value="Salvar Chamada" class="default">
+</form>
+{% endblock %}

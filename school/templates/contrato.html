@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Contrato Escolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            line-height: 1.4;
+        }
+        .assinatura {
+            margin-top: 20px;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        .assinatura div {
+            margin-top: 60px;
+            border-top: 1px solid #000;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contrato de Responsabilidade Escolar</h1>
+    
+    <h2>Dados do Aluno</h2>
+    <p><strong>Nome:</strong> {{ aluno.complet_name_aluno }}</p>
+    <p><strong>Telefone:</strong> {{ aluno.phone_number_aluno }}</p>
+    <p><strong>Data de Nascimento:</strong> {{ aluno.birthday_aluno|date:"d/m/Y" }}</p>
+    <p><strong>CPF:</strong> {{ aluno.cpf_aluno }}</p>
+    <p><strong>Email:</strong> {{ aluno.email_aluno }}</p>
+
+    <h2>Dados do Responsável</h2>
+    <p><strong>Nome:</strong> {{ responsavel.complet_name }}</p>
+    <p><strong>Telefone:</strong> {{ responsavel.phone_number }}</p>
+    <p><strong>CPF:</strong> {{ responsavel.cpf }}</p>
+    <p><strong>Email:</strong> {{ responsavel.email }}</p>
+
+    <h2>Termo de Responsabilidade</h2>
+    <p>
+        Eu, {{ responsavel.complet_name }}, responsável legal pelo aluno {{ aluno.complet_name_aluno }}, confirmo 
+        que tenho pleno conhecimento das regras e compromissos estabelecidos pela instituição
+        de ensino, e me comprometo a monitorar o desempenho acadêmico do aluno, garantindo sua
+        frequência, conduta adequada e o cumprimento das tarefas escolares.
+    </p>
+    <div class="assinatura">
+        <p>Assinatura do Responsável</p>
+        <div></div>
+    </div>
+</body>
+</html>

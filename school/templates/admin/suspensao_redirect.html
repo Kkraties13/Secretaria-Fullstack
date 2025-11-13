@@ -1,0 +1,81 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Início' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label='school' %}">School</a>
+    &rsaquo; <a href="{% url 'admin:attendance_by_date' %}">Chamadas Realizadas</a>
+    &rsaquo; {{ formatted_date }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Chamada - {{ formatted_date }}</h1>
+    
+    <p>Turmas com chamadas registradas nesta data:</p>
+    
+    <div class="module">
+        <table>
+            <thead>
+                <tr>
+                    <th>Turma</th>
+                    <th>Presentes</th>
+                    <th>Faltas</th>
+                    <th>Total</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for turma_info in turmas %}
+                <tr>
+                    <td>{{ turma_info.turma }}</td>
+                    <td><span style="color: green; font-weight: bold;">{{ turma_info.presentes }}</span></td>
+                    <td><span style="color: red; font-weight: bold;">{{ turma_info.faltas }}</span></td>
+                    <td>{{ turma_info.total_alunos }}</td>
+                    <td>
+                        <!-- 🚨 CORREÇÃO: URL deve usar o URL da Turma (attendance_turma_detail) -->
+                        <a href="{{ turma_info.url }}" class="button">Ver Alunos</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">Nenhuma turma encontrada para esta data.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="submit-row">
+        <a href="{% url 'admin:attendance_by_date' %}" class="button">← Voltar para Datas</a>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Ação 3: Corrigir o Backend de Atendimento (attendance_date_detail)
+
+O seu código Python que gera a lista de turmas para `attendance_date_detail` precisa ser ajustado para garantir que as URLs `attendance_turma_detail` e `attendance_date_detail` usem os argumentos corretos.
+
+**Arquivo a editar:** `school/admin_attendance.py` [cite: uploaded:amandinha20/app-secretaria/app-secretaria-a40c0e5d570f46672ff94da3b59be8a8aebeedd6/school/admin_attendance.py]
+
+1.  **Função `attendance_by_date`:** Corrija o `reverse` (já havíamos feito, mas confirmo a correção):
+
+    ```python
+    # Em school/admin_attendance.py (dentro de attendance_by_date)
+    date_info.append({
+        # ...
+        'url': reverse('admin:attendance_date_detail', args=[date.strftime('%Y-%m-%d')])
+    })
+    ```
+
+2.  **Função `attendance_date_detail`:** Corrija o `reverse` para a URL de detalhes da turma:
+
+    ```python
+    # Em school/admin_attendance.py (dentro de attendance_date_detail)
+    turma_info.append({
+        # ...
+        'url': reverse('admin:attendance_turma_detail', args=[date, turma.id])
+    })

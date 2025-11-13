@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Selecionar Aluno - Advertências{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Selecionar Aluno da Turma {{ turma.class_name }}</h1>
+    <p>Escolha um aluno para visualizar suas advertências:</p>
+
+    <ul>
+        {% for aluno in alunos %}
+        <li>
+            <a href="/admin/school/advertencia/?turma={{ turma.id }}&aluno={{ aluno.id }}">{{ aluno.complet_name_aluno }}</a>
+        </li>
+        {% empty %}
+        <li>Nenhum aluno com advertências nesta turma.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="/admin/advertencia/select-turma/">Voltar para seleção de turma</a>
+</div>
+{% endblock %}

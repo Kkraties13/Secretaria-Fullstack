@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertência</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            line-height: 1.4;
+        }
+        .assinatura {
+            margin-top: 20px;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        .assinatura div {
+            margin-top: 60px;
+            border-top: 1px solid #000;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Advertência Escolar</h1>
+    <p>{{ advertencia.data }}</p>
+    <p>Informo ao responsável {{ responsavel.nome }}, que a aluna(o) {{ aluno.nome }} da turma {{ aluno.turma }} {{ aluno.itinerario }} está sendo advertido por {{ advertencia.motivo }}, assim infringindo as regras da instituição.</p>
+
+    <div class="assinatura">
+        <p>Assinatura da Escola</p>
+        <div></div>
+    </div>
+    <div class="assinatura">
+        <p>Assinatura do Responsável</p>
+        <div></div>
+    </div>
+</body>
+</html>

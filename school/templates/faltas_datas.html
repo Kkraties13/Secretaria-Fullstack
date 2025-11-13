@@ -1,0 +1,8 @@
+<h2>Datas de chamadas salvas</h2>
+<ul>
+  {% for data in datas %}
+    <li>
+      <a href="{% url 'faltas_turmas_por_data' data=data %}">{{ data }}</a>
+    </li>
+  {% endfor %}
+</ul>

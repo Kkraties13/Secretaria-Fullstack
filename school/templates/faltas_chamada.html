@@ -1,0 +1,16 @@
+<h2>Chamada salva para {{ turma.class_name }} em {{ data }}</h2>
+<table border="1">
+  <tr>
+    <th>Aluno</th>
+    <th>Status</th>
+  </tr>
+  {% for falta in faltas %}
+    <tr>
+      <td>{{ falta.aluno.complet_name_aluno }}</td>
+      <td>{{ falta.get_status_display }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="2">Nenhuma chamada registrada para esta turma nesta data.</td></tr>
+  {% endfor %}
+</table>
+<a href="{% url 'editar_chamada' data=data turma_id=turma.id %}">Editar chamada</a>

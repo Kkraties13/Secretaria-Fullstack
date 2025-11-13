@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Desempenho em {{ materia.name_subject }}</title>
+</head>
+<body>
+    <!-- Título principal da página -->
+    <h1>Desempenho em {{ materia.name_subject }}</h1>
+    <!-- Exibe o gráfico de notas da disciplina -->
+    <img src="data:image/png;base64,{{ grafico }}" alt="Gráfico de Notas">
+    <h2>Notas</h2>
+    <ul>
+        <!-- Lista as notas dos alunos na disciplina -->
+        {% for nota in notas %}
+        <li>
+            {% if nota.aluno and nota.materia %}
+                {{ nota.aluno }} - {{ nota.materia }}: {{ nota.nota }}
+            {% else %}
+                ERRO: Nota sem aluno ou matéria (ID: {{ nota.id }})
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

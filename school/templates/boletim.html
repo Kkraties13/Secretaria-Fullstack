@@ -1,0 +1,100 @@
+{% load boletim_filters %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Boletim de {{ aluno.complet_name_aluno }}</title>
+    <style>
+        body { font-family: DejaVu Sans, Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; font-size: 22px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 16px; font-size: 13px; }
+        th, td { border: 1px solid #333; padding: 5px; text-align: center; }
+        th { background: #eaeaea; }
+        .alerta { color: #b00; font-weight: bold; margin-bottom: 8px; text-align: center; }
+    </style>
+</head>
+<body>
+    <!-- Título principal do boletim do aluno -->
+    <h1>Boletim de {{ aluno.complet_name_aluno }}</h1>
+    {% if bimestre %}
+        <div style="text-align:center; font-size:18px; font-weight:bold; margin-bottom:10px;">
+            {% for val, label in bimestre_choices %}
+                {% if val|stringformat:"s" == bimestre|stringformat:"s" %}
+                    {{ label }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <!-- Exibe alerta se o aluno tiver nota(s) abaixo de 70 -->
+    {% if tem_alerta %}
+        <div class="alerta">
+            ⚠️ Atenção: Este aluno possui nota(s) abaixo de 70!
+        </div>
+    {% endif %}
+    {% if bimestre %}
+        <div style="margin-bottom: 15px; font-weight: bold; text-align: center;">
+            Faltas neste bimestre: {{ faltas_bimestre }}<br>
+            Porcentagem de presença: 
+            {% if porcentagem_presenca is not None %}
+                {{ porcentagem_presenca }}%
+            {% else %}
+                0%
+            {% endif %}
+        </div>
+        <table>
+            <tr>
+                <th>Matéria</th>
+                <th>Nota</th>
+                <th>Observação</th>
+            </tr>
+            {% for nota in notas %}
+            <tr{% if nota.nota < 70 %} style="color: red; font-weight: bold;"{% endif %}>
+                <td>{{ nota.materia.name_subject }}</td>
+                <td>{{ nota.nota }}</td>
+                <td>{{ nota.observacao }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Nenhuma nota lançada.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div style="margin-bottom: 15px; font-weight: bold; text-align: center;">
+            Total de faltas: {{ faltas_bimestre }}
+        </div>
+        <table>
+            <tr>
+                <th>Matéria</th>
+                {% for val, label in bimestre_choices %}
+                    <th>{{ label }}</th>
+                {% endfor %}
+                <th>Observação</th>
+            </tr>
+            {% for materia in materias %}
+                <tr>
+                    <td>{{ materia.name_subject }}</td>
+                    {% for val, label in bimestre_choices %}
+                        {% with nota=materia.notas_por_bimestre|dict_get:val %}
+                            <td{% if nota and nota.nota < 70 %} style="color: red; font-weight: bold;"{% endif %}>
+                                {% if nota %}{{ nota.nota }}{% else %}-{% endif %}
+                            </td>
+                        {% endwith %}
+                    {% endfor %}
+                    <td>
+                        {% for val, label in bimestre_choices %}
+                            {% with nota=materia.notas_por_bimestre|dict_get:val %}
+                                {% if nota and nota.observacao %}{{ nota.observacao }}<br>{% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">Nenhuma matéria encontrada.</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>

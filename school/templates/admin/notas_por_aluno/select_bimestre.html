@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Selecionar Bimestre</h1>
+<form method="get">
+    <input type="hidden" name="turma" value="{{ turma.id }}">
+    <input type="hidden" name="aluno" value="{{ aluno.id }}">
+    <label for="bimestre">Bimestre:</label>
+    <select name="bimestre" id="bimestre" required>
+        {% for val, label in bimestre_choices %}
+            <option value="{{ val }}">{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Próximo</button>
+</form>
+{% endblock %}
