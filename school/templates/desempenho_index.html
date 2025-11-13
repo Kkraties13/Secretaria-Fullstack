@@ -1,25 +1,72 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Desempenho</title>
-</head>
-<body>
-    <!-- Título principal da página de desempenho -->
-    <h1>Desempenho</h1>
-    <!-- Lista de opções para acessar os relatórios de desempenho -->
-    <ul>
-        <li>
-            <!-- Link para desempenho por aluno -->
-            <a href="{% url 'desempenho_aluno_select' %}">Desempenho por Aluno</a>
-        </li>
-        <li>
-            <!-- Link para desempenho por turma -->
-            <a href="{% url 'desempenho_turma_select' %}">Desempenho por Turma</a>
-        </li>
-        <li>
-            <!-- Link para desempenho por disciplina -->
-            <a href="{% url 'desempenho_disciplina_select' %}">Desempenho por Disciplina</a>
-        </li>
-    </ul>
-</body>
-</html>
+{% extends "school/base.html" %}
+
+{% block title %}Desempenho e Relatórios{% endblock %}
+
+{% block content %}
+<main class="flex-1 p-6 md:p-10 bg-gray-50">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center">
+            <i class="ph ph-chart-bar text-indigo-600 mr-2 text-4xl"></i>
+            Central de Desempenho e Relatórios
+        </h1>
+        <p class="mt-2 text-gray-600">Acesse métricas e análises detalhadas para coordenadores e professores.</p>
+    </header>
+
+    <!-- Cartões de Navegação -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Cartão 1: Desempenho por Aluno -->
+        <a href="{% url 'school:reports_student_performance' %}" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border border-indigo-100">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-indigo-100 rounded-full text-indigo-600">
+                    <i class="ph ph-user-list text-3xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Desempenho Individual</h2>
+                    <p class="text-sm text-gray-500 mt-1">Veja o histórico e o progresso de cada aluno.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Cartão 2: Relatório por Turma -->
+        <a href="{% url 'school:reports_class_summary' %}" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border border-emerald-100">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-emerald-100 rounded-full text-emerald-600">
+                    <i class="ph ph-chalkboard-teacher text-3xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Análise de Turmas</h2>
+                    <p class="text-sm text-gray-500 mt-1">Métricas de média e distribuição de notas por turma.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Cartão 3: Avaliação de Professores -->
+        <a href="{% url 'school:reports_teacher_evaluation' %}" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border border-orange-100">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-orange-100 rounded-full text-orange-600">
+                    <i class="ph ph-identification-badge text-3xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Relatórios de Professores</h2>
+                    <p class="text-sm text-gray-500 mt-1">Visão do engajamento e resultados por docente.</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Cartão 4: Atendimentos Pendentes -->
+        <a href="{% url 'school:atendimentos' %}" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 border border-red-100">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-red-100 rounded-full text-red-600">
+                    <i class="ph ph-chats text-3xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Acompanhamento de Atendimentos</h2>
+                    <p class="text-sm text-gray-500 mt-1">Gerencie solicitações de ajuda e aconselhamento.</p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</main>
+{% endblock %}

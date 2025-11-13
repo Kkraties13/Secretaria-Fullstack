@@ -1,25 +1,12 @@
 """
 Django settings for core project.
-
-- BASE_DIR: Caminho base do projeto.
-- DEBUG: Ativa modo de desenvolvimento.
-- ALLOWED_HOSTS: Hosts permitidos.
-- INSTALLED_APPS: Apps instalados (admin, auth, school, etc).
-- MIDDLEWARE: Camadas de processamento de requisições.
-- ROOT_URLCONF: Arquivo principal de rotas.
-- TEMPLATES: Configuração dos templates HTML.
-- DATABASES: Configuração do banco de dados (SQLite).
-- AUTH_PASSWORD_VALIDATORS: Validações de senha.
-- LANGUAGE_CODE, TIME_ZONE: Localização.
-- STATIC_URL: Caminho para arquivos estáticos.
-- MEDIA_URL, MEDIA_ROOT: Caminho para arquivos enviados (ex: contratos assinados).
-- DEFAULT_AUTO_FIELD: Tipo padrão de chave primária.
 """
 
 from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Limpeza: Mantendo apenas a sintaxe moderna (pathlib)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -77,8 +64,10 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'school/templates'],
-        'APP_DIRS': True,
+        # CORREÇÃO: Usamos o DIRS para apontar para a pasta 'templates' global,
+        # onde deve estar seu base.html
+        'DIRS': [BASE_DIR / 'templates'], 
+        'APP_DIRS': True, # Garante que templates/school/ seja encontrado
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -139,6 +128,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Media files (uploads)
 MEDIA_URL = '/media/'
