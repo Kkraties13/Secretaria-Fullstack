@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Secretaria Acadêmica{% endblock %}</title>
+
+    <!-- Tailwind CSS via CDN (para desenvolvimento; em produção, use build com PurgeCSS) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Phosphor Icons (para ícones) - Mantenha só uma instância -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+    
+    <!-- Bootstrap Icons (opcional, se precisar; remova se não usar) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- CSS Personalizado -->
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    
+    <!-- Bloco para CSS específico da página -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+    
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar - Recolhível em desktop, oculto/overlay em mobile -->
+        {% include 'school/includes/sidebar.html' %}
+
+        <!-- Conteúdo Principal -->
+        <div id="content-wrapper" class="flex flex-col flex-1 overflow-y-auto transition-all duration-300 ease-in-out md:ml-64">
+            
+            <!-- Navbar (Cabeçalho Superior) -->
+            {% include 'school/includes/navbar.html' %}
+
+            <!-- Área de Conteúdo da Página -->
+            <main class="flex-1 p-6">
+                {% block content %}
+                <!-- O conteúdo específico de cada página será inserido aqui -->
+                {% endblock %}
+            </main>
+
+            <!-- Rodapé (Opcional) -->
+            <footer class="bg-white mt-auto py-3 border-t border-gray-200">
+                <div class="container mx-auto text-center text-sm text-gray-500">
+                    &copy; 2024 Secretaria Acadêmica. Todos os direitos reservados.
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- JS Personalizado -->
+    <script src="{% static 'js/site.js' %}"></script>
+
+    <!-- Bloco para JS específico da página -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

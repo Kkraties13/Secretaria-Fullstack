@@ -1,0 +1,163 @@
+/* =========================================
+ARQUIVO CSS PRINCIPAL (site.css)
+Estrutura para frontend integrado com Django.
+=========================================
+*/
+
+/* 1. Reset e Fontes */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root {
+    --primary-blue: #007bff; /* Azul primário Bootstrap */
+    --secondary-blue: #0056b3; /* Azul mais escuro */
+    --background-light: #f8f9fa; /* Cinza claro para o fundo */
+    --sidebar-width: 280px;
+    --header-height: 80px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-light);
+    color: #333;
+}
+
+/* 2. Layout Principal */
+#wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Área de Conteúdo (Tudo, exceto a sidebar) */
+#content-wrapper {
+    flex-grow: 1; /* Ocupa o restante do espaço */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Área Principal Branca */
+.container-fluid.main-content-area {
+    padding: 20px;
+    background-color: white;
+    margin-top: 20px; 
+    border-radius: 1rem; /* Borda arredondada para o bloco principal */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    min-height: calc(100vh - 120px); /* Ajuste de altura */
+}
+
+/* 3. Sidebar (Menu Lateral) */
+#sidebar-wrapper {
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    background-color: var(--primary-blue);
+    color: white;
+    transition: margin 0.3s ease-out;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto; /* Scroll apenas na sidebar */
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 1.5rem 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#sidebar-wrapper .list-group-item {
+    background-color: var(--primary-blue);
+    color: rgba(255, 255, 255, 0.8);
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+}
+
+#sidebar-wrapper .list-group-item:hover,
+#sidebar-wrapper .list-group-item.active {
+    background-color: var(--secondary-blue);
+    color: white;
+    border-radius: 0;
+}
+
+/* 4. Navbar (Cabeçalho Superior - Banner Azul) */
+.navbar-top {
+    background-color: var(--primary-blue);
+    color: white;
+    height: var(--header-height);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    align-items: center;
+}
+
+.navbar-top h5 {
+    font-weight: 600;
+}
+
+/* 5. Estilos para Cards e Componentes */
+.custom-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Sombra mais visível para cards */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* Estilo para ícones de resumo no Dashboard */
+.summary-icon {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+}
+
+.table-responsive {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 6. Responsividade (Ocultar Sidebar no Mobile) */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: calc(-1 * var(--sidebar-width));
+        position: fixed;
+        z-index: 1030; /* Acima da navbar normal */
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #content-wrapper {
+        padding-left: 0;
+    }
+
+    .main-content-area {
+        margin-top: 0 !important;
+        border-radius: 0.5rem;
+    }
+
+    .navbar-top {
+        padding-left: 15px;
+    }
+}
+
+/* Estilo para o botão de toggle da sidebar no mobile */
+.sidebar-toggle-btn {
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: var(--secondary-blue);
+}

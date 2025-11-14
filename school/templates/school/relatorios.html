@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Geração de Relatórios{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Geração e Download de Relatórios</h1>
+
+<div class="card custom-card shadow mb-4">
+    <div class="card-header py-3 bg-white border-bottom-0">
+        <h6 class="m-0 font-weight-bold text-primary">Opções de Filtro</h6>
+    </div>
+    <div class="card-body">
+        <form id="reportForm">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="tipoRelatorio" class="form-label">Tipo de Relatório</label>
+                    <select id="tipoRelatorio" class="form-select custom-card">
+                        <option value="desempenho">Desempenho Acadêmico</option>
+                        <option value="faltas">Faltas e Presenças</option>
+                        <option value="ocorrencias">Ocorrências</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="periodo" class="form-label">Período</label>
+                    <select id="periodo" class="form-select custom-card">
+                        <option>2º Bimestre</option>
+                        <option>Ano Letivo Completo</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <!-- Chama a função JS para download (downloadReport no site.js) -->
+                    <button type="button" onclick="downloadReport('{{ API_BASE_URL }}relatorios/generate/?type=' + document.getElementById('tipoRelatorio').value, 'relatorio_escolar.pdf')" class="btn btn-primary w-100">
+                        <i class="bi bi-file-earmark-arrow-down-fill me-2"></i> Gerar e Baixar PDF
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card custom-card shadow mb-4">
+    <div class="card-header py-3 bg-white border-bottom-0">
+        <h6 class="m-0 font-weight-bold text-primary">Indicadores e Métricas (Cálculo no Frontend)</h6>
+    </div>
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-md-6 mb-3">
+                <div class="p-3 bg-light rounded-3">
+                    <h3 class="text-success">95%</h3>
+                    <p class="mb-0 text-muted small">Taxa de Aprovação (Simulação)</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="p-3 bg-light rounded-3">
+                    <h3 class="text-danger">1.5%</h3>
+                    <p class="mb-0 text-muted small">Taxa de Evasão (Simulação)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

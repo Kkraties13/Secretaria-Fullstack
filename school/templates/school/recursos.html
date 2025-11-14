@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recursos Didáticos{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-12">
+        <h2 class="h4 mb-4 text-primary">Empréstimo de Recursos Didáticos</h2>
+    </div>
+
+    <!-- Tabela de Recursos Disponíveis -->
+    <div class="col-12">
+        <div class="card app-card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Inventário e Reserva</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Recurso</th>
+                                <th>Tipo</th>
+                                <th>Disponível</th>
+                                <th>Próxima Devolução</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Notebook Dell Latitude 5420</td>
+                                <td>Equipamento</td>
+                                <td><span class="badge bg-success">5 unidades</span></td>
+                                <td>29/11/2025</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reserveModal" data-resource="Notebook Dell">
+                                        <i data-lucide="calendar-plus" style="width: 16px; height: 16px;"></i> Reservar
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Livro: Fundamentos de Matemática</td>
+                                <td>Livro</td>
+                                <td><span class="badge bg-danger">0 unidades</span></td>
+                                <td>15/12/2025</td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary" disabled>Indisponível</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Projetor Epson PowerLite</td>
+                                <td>Equipamento</td>
+                                <td><span class="badge bg-success">2 unidades</span></td>
+                                <td>--</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reserveModal" data-resource="Projetor Epson">
+                                        <i data-lucide="calendar-plus" style="width: 16px; height: 16px;"></i> Reservar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tabela de Minhas Reservas -->
+    <div class="col-12 mt-4">
+        <div class="card app-card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Minhas Reservas Ativas</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Recurso</th>
+                                <th>Data de Retirada</th>
+                                <th>Data de Devolução</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Notebook Dell Latitude 5420 (ID: N5420-03)</td>
+                                <td>01/12/2025</td>
+                                <td>05/12/2025</td>
+                                <td><span class="badge bg-primary">Confirmada</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Reserva -->
+<div class="modal fade" id="reserveModal" tabindex="-1" aria-labelledby="reserveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content app-card">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="reserveModalLabel">Reservar Recurso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/api/recursos/reservar/" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <h6 class="mb-3">Recurso: <span id="resource-name" class="fw-bold text-primary"></span></h6>
+                    
+                    <div class="mb-3">
+                        <label for="date-retirada" class="form-label">Data de Retirada</label>
+                        <input type="date" class="form-control" id="date-retirada" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date-devolucao" class="form-label">Data de Devolução Estimada</label>
+                        <input type="date" class="form-control" id="date-devolucao" required>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    // Lógica para preencher o modal de reserva
+    const reserveModal = document.getElementById('reserveModal');
+    reserveModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+        const resourceName = button.getAttribute('data-resource');
+
+        const modalResourceName = reserveModal.querySelector('#resource-name');
+        modalResourceName.textContent = resourceName;
+        
+        // Em um sistema real, você também carregaria os IDs de recursos aqui
+    });
+</script>
+{% endblock %}

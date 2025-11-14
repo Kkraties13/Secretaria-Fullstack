@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Calendário Acadêmico{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-12">
+        <h2 class="h4 mb-4 text-primary">Calendário Acadêmico</h2>
+    </div>
+
+    <!-- Título e Navegação do Mês -->
+    <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+        <button class="btn btn-outline-primary"><i data-lucide="chevron-left" style="width: 18px; height: 18px;"></i> Mês Anterior</button>
+        <h3 class="h5 mb-0">Dezembro de 2025</h3>
+        <button class="btn btn-outline-primary">Próximo Mês <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i></button>
+    </div>
+
+    <!-- Exibição do Calendário (Simplificada) -->
+    <div class="col-12">
+        <div class="card app-card p-4">
+            <div class="table-responsive">
+                <table class="table table-bordered text-center align-middle" style="min-width: 600px;">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linha 1 -->
+                        <tr>
+                            <td class="text-muted">30</td>
+                            <td class="day-cell" data-bs-toggle="modal" data-bs-target="#eventModal" data-events="Entrega de Projeto de Ciências" data-date="01/Dez">1</td>
+                            <td class="day-cell">2</td>
+                            <td class="day-cell">3</td>
+                            <td class="day-cell">4</td>
+                            <td class="day-cell event-day bg-info bg-opacity-10 text-info" data-bs-toggle="modal" data-bs-target="#eventModal" data-events="Palestra de Carreira" data-date="05/Dez">5</td>
+                            <td class="day-cell">6</td>
+                        </tr>
+                        <!-- Linha 2 -->
+                        <tr>
+                            <td class="day-cell">7</td>
+                            <td class="day-cell">8</td>
+                            <td class="day-cell">9</td>
+                            <td class="day-cell event-day bg-danger bg-opacity-10 text-danger" data-bs-toggle="modal" data-bs-target="#eventModal" data-events="Feriado Nacional" data-date="10/Dez">10</td>
+                            <td class="day-cell">11</td>
+                            <td class="day-cell">12</td>
+                            <td class="day-cell event-day bg-success bg-opacity-10 text-success" data-bs-toggle="modal" data-bs-target="#eventModal" data-events="Prova Final (Matemática)" data-date="13/Dez">13</td>
+                        </tr>
+                        <!-- Resto do calendário... -->
+                        <tr><td colspan="7" class="text-center text-muted">...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilo customizado para o calendário -->
+<style>
+    .day-cell {
+        height: 80px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        vertical-align: top;
+        padding-top: 10px;
+    }
+    .day-cell:hover {
+        background-color: var(--secondary-gray);
+    }
+    .event-day {
+        font-weight: bold;
+    }
+    .event-day::after {
+        content: attr(data-events);
+        display: block;
+        font-size: 0.75rem;
+        margin-top: 5px;
+    }
+</style>
+
+<!-- Modal de Detalhes do Evento -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content app-card">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="eventModalLabel">Detalhes do Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="event-date" class="fw-bold"></p>
+                <p id="event-description"></p>
+                
+                <p class="mt-3 small text-muted">Tipo: Palestra (Workshop)</p>
+                <button class="btn btn-sm btn-primary"><i data-lucide="check" style="width: 16px; height: 16px;" class="me-1"></i> Inscrever-se</button>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    // Lógica para preencher o modal com os dados do dia clicado
+    const eventModal = document.getElementById('eventModal');
+    eventModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget;
+        const events = button.getAttribute('data-events');
+        const date = button.getAttribute('data-date');
+
+        const modalTitle = eventModal.querySelector('.modal-title');
+        const modalBodyDate = eventModal.querySelector('#event-date');
+        const modalBodyDescription = eventModal.querySelector('#event-description');
+
+        modalTitle.textContent = `Eventos em ${date}`;
+        modalBodyDate.textContent = date;
+        modalBodyDescription.textContent = events;
+    });
+</script>
+{% endblock %}

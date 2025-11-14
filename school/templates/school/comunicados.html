@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Comunicados{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Comunicados e Notificações</h1>
+
+<div class="card custom-card shadow mb-4">
+    <div class="card-header py-3 bg-white border-bottom-0 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Lista de Mensagens (GET /api/comunicados/)</h6>
+        <div class="btn-group">
+            <button class="btn btn-sm btn-outline-primary">Não Lidos</button>
+            <button class="btn btn-sm btn-outline-secondary">Arquivados</button>
+        </div>
+    </div>
+    <div class="list-group list-group-flush">
+        
+        <!-- Comunicado 1 (Não Lido) -->
+        <a href="#" class="list-group-item list-group-item-action border-bottom-0 d-flex justify-content-between align-items-center bg-light">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-envelope-fill me-3 text-primary"></i>
+                <div>
+                    <h6 class="mb-0">Urgente: Manutenção na Rede de Computadores</h6>
+                    <p class="mb-0 small text-muted">Aviso da TI: A rede estará inoperante na noite de sexta.</p>
+                </div>
+            </div>
+            <span class="small text-nowrap text-muted">10/03/2025</span>
+        </a>
+
+        <!-- Comunicado 2 (Lido) -->
+        <a href="#" class="list-group-item list-group-item-action border-bottom-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-envelope-open-fill me-3 text-secondary"></i>
+                <div>
+                    <h6 class="mb-0">Entrega do Boletim do 1º Bimestre</h6>
+                    <p class="mb-0 small text-muted">O boletim já está disponível no portal do aluno.</p>
+                </div>
+            </div>
+            <span class="small text-nowrap text-muted">05/03/2025</span>
+        </a>
+        
+    </div>
+</div>
+{% endblock %}

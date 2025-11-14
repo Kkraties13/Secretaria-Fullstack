@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Início{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
+
+<!-- Linha de Cards de Resumo -->
+<div class="row">
+    
+    <!-- Card de Comunicados -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a href="{% url 'school:comunicados' %}" class="text-decoration-none">
+            <div class="card custom-card h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Comunicados Não Lidos
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-bell-fill summary-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Card de Agenda -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a href="{% url 'school:agenda' %}" class="text-decoration-none">
+            <div class="card custom-card h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Próxima Atividade
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Prova de Matemática (Amanhã)</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-calendar-check-fill summary-icon" style="color: #28a745;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Card de Notas -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a href="{% url 'school:notas' %}" class="text-decoration-none">
+            <div class="card custom-card h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Média Geral (2º Bimestre)</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">8.2</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-journal-bookmark-fill summary-icon" style="color: #17a2b8;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Card de Ocorrências -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <a href="{% url 'school:atendimentos' %}" class="text-decoration-none">
+            <div class="card custom-card h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col me-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Ocorrências Pendentes
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-exclamation-triangle-fill summary-icon" style="color: #ffc107;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Conteúdo Adicional do Dashboard -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card mb-4">
+            <div class="card-header py-3 bg-white border-bottom-0">
+                <h6 class="m-0 font-weight-bold text-primary">Notificações Recentes</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Nova nota lançada em História.
+                        <span class="badge bg-success rounded-pill">Agora</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Reunião de pais agendada para sexta-feira.
+                        <span class="badge bg-primary rounded-pill">1h atrás</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

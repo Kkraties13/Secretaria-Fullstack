@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Atendimentos{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-12">
+        <h2 class="h4 mb-4 text-primary">Agendamento de Atendimentos</h2>
+    </div>
+
+    <!-- Botão de Novo Agendamento -->
+    <div class="col-12 text-end mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">
+            <i data-lucide="plus" style="width: 18px; height: 18px;" class="me-2"></i> Agendar Novo Atendimento
+        </button>
+    </div>
+
+    <!-- Tabela de Atendimentos Agendados -->
+    <div class="col-12">
+        <div class="card app-card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Meus Atendimentos Agendados</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Com Quem</th>
+                                <th>Assunto</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>28/11/2025</td>
+                                <td>15:00h</td>
+                                <td>Prof. Ana Costa (Matemática)</td>
+                                <td>Dúvidas sobre o projeto final</td>
+                                <td><span class="badge bg-warning">Pendente</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Cancelar"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>15/11/2025</td>
+                                <td>09:00h</td>
+                                <td>Secretaria (Financeiro)</td>
+                                <td>Renegociação de mensalidade</td>
+                                <td><span class="badge bg-success">Realizado</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Ver Detalhes"><i data-lucide="eye" style="width: 16px; height: 16px;"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Novo Agendamento -->
+<div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content app-card">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="newAppointmentModalLabel">Agendar Atendimento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/api/atendimentos/agendar/" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="recipient" class="form-label">Recipiente</label>
+                        <select class="form-select" id="recipient" required>
+                            <option selected disabled>Selecione um Professor ou Setor</option>
+                            <option value="prof_ana">Prof. Ana Costa (Matemática)</option>
+                            <option value="sec_acad">Secretaria Acadêmica</option>
+                            <!-- ... Dados carregados da API: /api/usuarios/professores/ e /api/setores/ ... -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Data Preferencial</label>
+                        <input type="date" class="form-control" id="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="time" class="form-label">Horário Preferencial</label>
+                        <input type="time" class="form-control" id="time" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Assunto</label>
+                        <textarea class="form-control" id="subject" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Confirmar Agendamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+{% endblock %}

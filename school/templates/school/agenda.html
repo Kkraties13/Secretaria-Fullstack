@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Agenda e Atividades{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Agenda de Atividades</h1>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <label for="filtroTipo" class="form-label">Filtrar por Tipo</label>
+        <select id="filtroTipo" class="form-select custom-card">
+            <option selected>Todas as Atividades</option>
+            <option>Provas</option>
+            <option>Trabalhos/Entregas</option>
+            <option>Reuniões</option>
+        </select>
+    </div>
+</div>
+
+<div class="card custom-card shadow mb-4">
+    <div class="card-header py-3 bg-white border-bottom-0">
+        <h6 class="m-0 font-weight-bold text-primary">Próximas Entregas e Eventos (GET /api/eventos/)</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover small">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Disciplina</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>14/03/2025</td><td class="text-danger">Prova</td><td>Avaliação Final de História</td><td>História</td><td>Agendado</td></tr>
+                    <tr><td>20/03/2025</td><td class="text-warning">Entrega</td><td>Relatório do Projeto de Ciências</td><td>Ciências</td><td>Pendente</td></tr>
+                    <tr><td>25/03/2025</td><td class="text-success">Reunião</td><td>Reunião com Coordenador</td><td>Geral</td><td>Agendado</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Detalhes (Opcional) -->
+<div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventDetailModalLabel">Detalhes do Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Conteúdo do evento carregado via JS -->
+                <p>Aqui virão os detalhes completos do evento ao clicar em uma linha da tabela.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
