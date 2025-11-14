@@ -14,6 +14,10 @@ class AttendanceDateAdmin(admin.ModelAdmin):
     """
     change_list_template = 'admin/attendance_date_list.html'
     
+    def changelist_view(self, request, extra_context=None):
+        """Redireciona a lista de faltas para a view customizada por data."""
+        return redirect('admin:attendance_by_date')
+    
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [

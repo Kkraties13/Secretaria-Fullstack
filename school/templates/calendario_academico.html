@@ -146,7 +146,7 @@
     <div class="container">
         <div class="header">
             <h1>📅 Calendário Acadêmico</h1>
-            <a href="{% url 'adicionar_evento_calendario' %}" class="btn">➕ Adicionar Evento</a>
+            <a href="{% url 'school:adicionar_evento_calendario' %}" class="btn">➕ Adicionar Evento</a>
         </div>
 
         {% if messages %}
@@ -195,8 +195,8 @@
                             {% endif %}
                             
                             <div class="evento-acoes">
-                                <a href="{% url 'editar_evento_calendario' evento.id %}" class="btn btn-warning">✏️ Editar</a>
-                                <a href="{% url 'excluir_evento_calendario' evento.id %}" class="btn btn-danger">🗑️ Excluir</a>
+                                <a href="{% url 'school:editar_evento_calendario' evento.id %}" class="btn btn-warning">✏️ Editar</a>
+                                <a href="{% url 'school:excluir_evento_calendario' evento.id %}" class="btn btn-danger">🗑️ Excluir</a>
                             </div>
                         </div>
                     {% endfor %}

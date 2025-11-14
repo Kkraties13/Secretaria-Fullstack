@@ -124,7 +124,7 @@
 <body>
     <div class="container">
         <div class="navigation">
-            <a href="{% url 'agenda_professor' professor.id %}">← Voltar para Agenda do Professor</a>
+            <a href="{% url 'school:agenda_professor' professor.id %}">← Voltar para Agenda do Professor</a>
         </div>
 
         <div class="header">
@@ -192,7 +192,7 @@
                 <button type="submit" class="btn">
                     {% if atividade %}💾 Salvar Alterações{% else %}➕ Adicionar Atividade{% endif %}
                 </button>
-                <a href="{% url 'agenda_professor' professor.id %}" class="btn btn-secondary">❌ Cancelar</a>
+                <a href="{% url 'school:agenda_professor' professor.id %}" class="btn btn-secondary">❌ Cancelar</a>
             </div>
         </form>
     </div>

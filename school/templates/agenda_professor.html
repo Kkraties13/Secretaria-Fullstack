@@ -170,12 +170,12 @@
 <body>
     <div class="container">
         <div class="navigation">
-            <a href="{% url 'lista_professores_agenda' %}">← Voltar para Lista de Professores</a>
+            <a href="{% url 'school:lista_professores_agenda' %}">← Voltar para Lista de Professores</a>
         </div>
 
         <div class="header">
             <h1>📋 Agenda do Professor</h1>
-            <a href="{% url 'adicionar_atividade_agenda' professor.id %}" class="btn">➕ Adicionar Atividade</a>
+            <a href="{% url 'school:adicionar_atividade_agenda' professor.id %}" class="btn">➕ Adicionar Atividade</a>
         </div>
 
         <div class="professor-info">
@@ -228,8 +228,8 @@
                             {% endif %}
                             
                             <div class="atividade-acoes">
-                                <a href="{% url 'editar_atividade_agenda' atividade.id %}" class="btn btn-warning">✏️ Editar</a>
-                                <a href="{% url 'excluir_atividade_agenda' atividade.id %}" class="btn btn-danger">🗑️ Excluir</a>
+                                <a href="{% url 'school:editar_atividade_agenda' atividade.id %}" class="btn btn-warning">✏️ Editar</a>
+                                <a href="{% url 'school:excluir_atividade_agenda' atividade.id %}" class="btn btn-danger">🗑️ Excluir</a>
                             </div>
                         </div>
                     {% endfor %}

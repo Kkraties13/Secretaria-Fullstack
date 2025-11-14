@@ -54,6 +54,7 @@ urlpatterns = [
     path('alunos/detalhe/<int:aluno_id>/', views.aluno_detalhe, name='aluno_detalhe'),
     path('turmas/', views.turmas_index, name='turmas_index'),
     path('turmas/detalhe/<int:turma_id>/', views.turma_detalhe, name='turma_detalhe'),
+    path('professores/', views.professor_index, name='professor_index'),
 
     # Autenticação
     path('login/', views.login_user, name='login'),
@@ -111,7 +112,7 @@ urlpatterns = [
     path('calendario/evento/<int:evento_id>/inscrever/', inscrever_aluno_evento, name='inscrever_aluno_evento'), 
 
     # Agenda de professores
-    path('professores/', lista_professores_agenda, name='lista_professores_agenda'),
+    path('professores_agenda/', lista_professores_agenda, name='lista_professores_agenda'),
     path('agenda/professor/<int:professor_id>/', agenda_professor, name='agenda_professor'),
     path('agenda/professor/<int:professor_id>/adicionar/', adicionar_atividade_agenda, name='adicionar_atividade_agenda'),
     path('agenda/atividade/<int:atividade_id>/editar/', editar_atividade_agenda, name='editar_atividade_agenda'),

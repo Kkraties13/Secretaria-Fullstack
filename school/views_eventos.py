@@ -46,7 +46,7 @@ def adicionar_evento_calendario(request):
         )
         evento.save()
         messages.success(request, 'Evento adicionado com sucesso!')
-        return redirect('calendario_academico')
+        return redirect('school:calendario_academico')
     
     context = {'turmas': Turmas.objects.all(), 'tipos_evento': CalendarioAcademico.TIPO_EVENTO_CHOICES}
     return render(request, 'calendario_form.html', context)
@@ -141,7 +141,7 @@ def adicionar_atividade_agenda(request, professor_id):
         )
         atividade.save()
         messages.success(request, 'Atividade adicionada com sucesso!')
-        return redirect('agenda_professor', professor_id=professor.id)
+        return redirect('school:agenda_professor', professor_id=professor.id)
     
     context = {'professor': professor, 'tipos_atividade': AgendaProfessor.TIPO_ATIVIDADE_CHOICES}
     return render(request, 'agenda_professor_form.html', context)

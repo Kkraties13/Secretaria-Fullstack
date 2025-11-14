@@ -93,7 +93,7 @@
 <body>
     <div class="container">
         <div class="navigation">
-            <a href="{% url 'calendario_academico' %}">← Voltar para Calendário Acadêmico</a>
+            <a href="{% url 'school:calendario_academico' %}">← Voltar para Calendário Acadêmico</a>
         </div>
 
         <div class="header">
@@ -116,7 +116,7 @@
                                 <p><strong>🎓 Turma:</strong> {{ professor.class_choices }}</p>
                             {% endif %}
                         </div>
-                        <a href="{% url 'agenda_professor' professor.id %}" class="btn">
+                        <a href="{% url 'school:agenda_professor' professor.id %}" class="btn">
                             📋 Ver Agenda
                         </a>
                     </div>

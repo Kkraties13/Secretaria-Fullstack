@@ -63,14 +63,23 @@ def index(request: HttpRequest) -> HttpResponse:
 @login_required
 def alunos_index(request: HttpRequest) -> HttpResponse:
     """ Lista geral de todos os alunos. Rota: path('alunos/', ...) """
-    # alunos = Aluno.objects.all() 
-    return render(request, 'school/alunos/alunos_index.html', {'alunos': []})
+    # Busca todos os alunos e passa para o template
+    alunos = Aluno.objects.select_related('responsavel', 'class_choices').all().order_by('complet_name_aluno')
+    return render(request, 'alunos_index.html', {'alunos': alunos})
 
 @login_required
 def turmas_index(request: HttpRequest) -> HttpResponse:
     """ Lista geral de todas as turmas. Rota: path('turmas/', ...) """
     # turmas = Turmas.objects.all()
     return render(request, 'school/turmas/turmas_index.html', {'turmas': []})
+
+@login_required
+def professor_index(request: HttpRequest) -> HttpResponse:
+    """ Painel do Professor com links para chamada e lançamento de notas. Rota: path('professores/', ...) """
+    context = {
+        'titulo': 'Painel do Professor',
+    }
+    return render(request, 'professor_index.html', context)
 
 
 # ==============================================================================
